@@ -4,25 +4,22 @@
 ## Criando banco de dados
 /server/database/$ py create_schema.py
 
-### Want to learn how to build this?
-
-Check out the [post](https://testdriven.io/developing-a-single-page-app-with-flask-and-vuejs).
-
 ## Want to use this project?
 
 1. Fork/Clone
 
-1. Run the server-side Flask app in one terminal window:
+1. Executando o servidor :
 
     ```sh
     $ cd server
-    $ python3.7 -m venv env
-    $ source env/bin/activate
+    $ virtualenv venv
+    $ py -m venv env
+    $ venv\Scripts\activate
     (env)$ pip install -r requirements.txt
-    (env)$ python app.py
+    (env)$ py app.py
     ```
 
-    Navigate to [http://localhost:5000](http://localhost:5000)
+    Acessar pela URL [http://localhost:5000](http://localhost:5000)
 
 1. Run the client-side Vue app in a different terminal window:
 
@@ -32,4 +29,4 @@ Check out the [post](https://testdriven.io/developing-a-single-page-app-with-fla
     $ npm run serve
     ```
 
-    Navigate to [http://localhost:8080](http://localhost:8080)
+    Acessar pela URL [http://localhost:8080](http://localhost:8080)

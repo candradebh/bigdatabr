@@ -6,6 +6,13 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import App from './App.vue';
 import router from './router';
 
+import SearchMain from './components/SearchMain.vue';
+import Navbar from './components/Navbar.vue';
+
+Vue.component('search-main', SearchMain);
+Vue.component('side-menu', Navbar);
+
+
 library.add(fas);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

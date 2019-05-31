@@ -10,17 +10,9 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="file"></span>
-            Conteudo
-          </a>
+          <router-link :to="{ name: 'Coleta' }" class="nav-link">Usuários</router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="shopping-cart"></span>
-            Usuários
-          </a>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" href="#">
             <span data-feather="users"></span>

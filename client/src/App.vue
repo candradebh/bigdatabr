@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-      <search-main></search-main>
+    <search-main></search-main>
     <div class="container-fluid">
       <div class="row">
         <side-menu></side-menu>

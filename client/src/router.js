@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-//Componentes
 import Books from './components/Books.vue';
 import Coleta from './components/Coleta.vue';
 import Ping from './components/Ping.vue';
@@ -23,13 +22,13 @@ export default new Router({
       path: '/respostas',
       name: 'Respostas',
       component: Respostas,
-      props: true
+      props: true,
     },
     {
       path: '/treinamento',
       name: 'Treinamento',
       component: Treinamento,
-      props: true
+      props: true,
     },
     {
       path: '/books',

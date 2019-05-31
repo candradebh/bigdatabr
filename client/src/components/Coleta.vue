@@ -33,7 +33,7 @@
             <tr></tr>
           </thead>
           <tbody>
-            <tr v-for="tweet in tweets">
+            <tr v-for="tweet in tweets" v-bind:key="tweet">
               <td>{{tweet.tweet.created_at}}</td>
               <td>{{tweet.tweet.text}}</td>
               <td>{{tweet.tweet.user.name}}</td>
@@ -46,7 +46,10 @@
         </table>
 
     </div>
-    <router-link :to="{ name: 'Respostas', params: { title: this.texto, tweets:this.tweets }}" class="btn btn-danger"  v-if="tweets" >Enviar Respostas</router-link>
+    <router-link :to="{ name: 'Respostas',
+                  params: { title: this.texto, tweets:this.tweets }}"
+                  class="btn btn-danger"
+                  v-if="tweets" >Enviar Respostas</router-link>
   </div>
 </template>
 
@@ -63,7 +66,7 @@ export default {
     return {
       texto: '',
       tipo: '',
-      tweets:'',
+      tweets: '',
       showMessage: false,
     };
   },
@@ -73,12 +76,11 @@ export default {
 
       const payload = {
         title: this.texto,
-        tipo: this.tipo
+        tipo: this.tipo,
       };
 
-      axios.post(path,payload)
+      axios.post(path, payload)
         .then((res) => {
-          console.log(res.data)
           this.tweets = res.data.data;
           this.message = res.data.message;
           this.showMessage = true;
@@ -87,7 +89,7 @@ export default {
           // eslint-disable-next-line
           console.error(error);
         });
-    }
+    },
 
 
   },

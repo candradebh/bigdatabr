@@ -30,7 +30,10 @@
             <td>{{tweet.tweet.created_at}}</td>
             <td>{{tweet.tweet.text}}</td>
             <td>{{tweet.tweet.user.name}}</td>
-            <td>{{tweet.sentimento}}</td>
+            <td align="center">
+              <font-awesome-icon icon="thumbs-down" size="xs" v-if="tweet.sentimento=='N'"/>
+              <font-awesome-icon icon="thumbs-up" size="xs" v-if="tweet.sentimento=='P'"/>
+            </td>
           </tr>
         </tbody>
       </table>

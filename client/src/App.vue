@@ -3,9 +3,7 @@
     <router-view/>
   </div>
 </template>
-
-<style>
-#app {
-  margin-top: 60px
-}
+<style lang="scss">
+  @import './assets/styles/custom.scss';
+  @import '../node_modules/bootstrap/scss/bootstrap.scss';
 </style>

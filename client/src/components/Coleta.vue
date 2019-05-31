@@ -27,19 +27,28 @@
     <div class="row" v-if="tweets">
         <table class="table table-hover table-bordered">
           <thead>
-            <tr>Data</tr>
-            <tr>Texto</tr>
-            <tr>Usuário</tr>
-            <tr></tr>
+            <tr>
+              <td>Data</td>
+              <td>Texto</td>
+              <td>Usuário</td>
+              <td>Positivo|Negativo</td>
+            </tr>
           </thead>
           <tbody>
-            <tr v-for="tweet in tweets" v-bind:key="tweet">
+            <tr v-for="tweet in tweets" v-bind:key="tweet.id">
               <td>{{tweet.tweet.created_at}}</td>
               <td>{{tweet.tweet.text}}</td>
               <td>{{tweet.tweet.user.name}}</td>
-              <td>
-                <button class="btn btn-danger" @click="tweet.sentimento = 'N'">Negativo</button>
-                <button class="btn btn-success" @click="tweet.sentimento = 'P'">Positivo</button>
+              <td align="center">
+                <div class="btn-group">
+                  <button class="btn btn-danger" @click="tweet.sentimento = 'N'">
+                    <font-awesome-icon icon="thumbs-down" size="xs" />
+                  </button>
+                  <button class="btn btn-success" @click="tweet.sentimento = 'P'">
+                    <font-awesome-icon icon="thumbs-up" size="xs" />
+                  </button>
+                </div>
+
               </td>
             </tr>
           </tbody>
@@ -81,6 +90,8 @@ export default {
 
       axios.post(path, payload)
         .then((res) => {
+          // eslint-disable-next-line
+          //console.log(res.data.data);
           this.tweets = res.data.data;
           this.message = res.data.message;
           this.showMessage = true;

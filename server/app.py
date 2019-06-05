@@ -44,6 +44,22 @@ def formatar_sentenca(sentenca):
    return {palavra: True for palavra in word_tokenize(sentenca)}
 
 # sanity check route
+@app.route('/dashboard', methods=['GET'])
+def dashboard():
+    response_object = {'status': 'success'}
+    if request.method == 'GET':
+
+        tweets_positivos = banco.positivos.find()
+        tweets_negativos = banco.negativos.find()
+
+
+        response_object['data'] = { 'tweets_positivos': json_util.dumps(tweets_positivos), 'tweets_negativos': json_util.dumps(tweets_negativos) }
+        
+
+    return jsonify(response_object)
+
+
+# sanity check route
 @app.route('/coleta', methods=['POST'])
 def coleta():
     response_object = {'status': 'success'}
@@ -77,9 +93,9 @@ def respostas():
         tweets = post_data.get('tweets')
         title = post_data.get('title')
 
+        # COLECTIONS MONGODB
         tweets_positivos = banco.positivos
         tweets_negativos = banco.negativos
-        tweets_neutros = banco.neutros
         #tweets_modelo = banco.modelo
 
         for tweet in tweets:
@@ -88,30 +104,17 @@ def respostas():
             if tweet['sentimento'] == "N":
                 negativos.append(tweet)
                 dados_treinamento.append([formatar_sentenca(texto), "negativo"])
-            elif tweet['sentimento'] == "P":
+
+            if tweet['sentimento'] == "P":
                 positivos.append(tweet)
                 dados_treinamento.append([formatar_sentenca(texto), "positivo"])
-            else:
-                neutros.append(tweet)
-                dados_treinamento.append([formatar_sentenca(texto), "neutro"])
+            
 
         if len(positivos)>0:
              tweets_positivos.insert(positivos)
         if len(negativos)>0:
             tweets_negativos.insert(negativos)
-        if len(neutros)>0:
-            tweets_neutros.insert(neutros)
-
-        #if len(dados_treinamento)>0:
-            #print(dados_treinamento)
         
-        #modelo = NaiveBayesClassifier.train(dados_treinamento)
-        #tweets_modelo.insert_one(modelo)
-        #filename = './modelos/'+title+'.obj'
-        #with open(filename, 'wb') as f:
-           #modelo_serial = pickle.dump(modelo, f)
-
-
         response_object['message'] = 'Tweets armazenados no banco de dados'
         response_object['title'] = title
         
@@ -133,7 +136,6 @@ def analisar():
         tweets_novos = banco.novos
         tweets_positivos = banco.positivos.find({'title':title})
         tweets_negativos = banco.negativos.find({'title':title})
-        tweets_neutros = banco.neutros.find({'title':title})
         #tweets_modelo = banco.modelo dumps(banco.tweets.find({'name':title}))
 
         #Dados de Treinamento
@@ -176,7 +178,7 @@ def analisar():
             resultado.append({'title': title, 'sentimento': sentimento, 'avaliacao': '',
                                     'tweet': sentenca})
 
-        print(resultado)
+        # print(resultado)
         response_object['message'] = 'Novo Tweets analisados pelo algoritimo'
         response_object['title'] = title
         response_object['data'] = json_util.dumps(tweets_buscados)

@@ -3,16 +3,15 @@
     <div class="sidebar-sticky">
       <ul class="nav flex-column">
         <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <span data-feather="home"></span>
+          <router-link :to="{ name: 'Dashboard' }" class="nav-link" active-class="active" exact >
             Dashboard
-            <span class="sr-only">(current)</span>
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
-          <router-link :to="{ name: 'Coleta' }" class="nav-link">Usuários</router-link>
+          <router-link :to="{ name: 'Coleta' }" class="nav-link" active-class="active" >
+              Usuários
+          </router-link>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href="#">
             <span data-feather="users"></span>

@@ -3,6 +3,7 @@ import Router from 'vue-router';
 
 import Books from './components/Books.vue';
 import Coleta from './components/Coleta.vue';
+import Dashboard from './views/dashboard/Dashboard.vue';
 import Ping from './components/Ping.vue';
 import Respostas from './components/Respostas.vue';
 import Treinamento from './components/Treinamento.vue';
@@ -15,6 +16,11 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'Dashboard',
+      component: Dashboard,
+    },
+    {
+      path: '/coleta',
       name: 'Coleta',
       component: Coleta,
     },

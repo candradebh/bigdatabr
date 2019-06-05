@@ -9,14 +9,13 @@
         </li>
         <li class="nav-item">
           <router-link :to="{ name: 'Coleta' }" class="nav-link" active-class="active" >
-              Usuários
+             Treinar Modelo
           </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span data-feather="users"></span>
-            Customers
-          </a>
+         <router-link :to="{ name: 'Treinamento' }" class="nav-link" active-class="active" >
+             Buscar novos
+          </router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">

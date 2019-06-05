@@ -2,9 +2,15 @@
   <div class="container">
     <h3>Modelo: {{ title }}</h3>
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <div class="form-group">
-          <label for="qtd">Quantidade de Tweets para buscar</label>
+          <label for="texto">Texto</label>
+          <input v-model="title" class="form-control">
+        </div>
+      </div>
+      <div class="col-lg-2">
+        <div class="form-group">
+          <label for="qtd">Quantidade</label>
           <input v-model="qtd" class="form-control">
         </div>
       </div>
@@ -46,20 +52,13 @@ import axios from 'axios';
 
 export default {
   name: 'Treinamento',
-  props: {
-    title: String,
-  },
   data() {
     return {
+      title: '',
       qtd: '',
       showMessage: false,
       tweets: '',
     };
-  },
-  created() {
-    if (this.title == null) {
-      this.$router.push('/respostas');
-    }
   },
   methods: {
     getTweets() {

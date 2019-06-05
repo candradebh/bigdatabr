@@ -3,11 +3,20 @@ import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+
+import VueMoment from 'vue-moment';
 import App from './App.vue';
 import router from './router';
 
 import SearchMain from './components/SearchMain.vue';
 import Navbar from './components/Navbar.vue';
+
+
+const moment = require('moment');
+
+Vue.use(VueMoment, {
+  moment,
+});
 
 Vue.component('search-main', SearchMain);
 Vue.component('side-menu', Navbar);

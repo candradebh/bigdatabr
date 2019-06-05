@@ -13,8 +13,8 @@
           </router-link>
         </li>
         <li class="nav-item">
-         <router-link :to="{ name: 'Treinamento' }" class="nav-link" active-class="active" >
-             Buscar novos
+          <router-link :to="{ name: 'NovosTweets' }" class="nav-link" active-class="active" >
+             Novos Tweets
           </router-link>
         </li>
         <li class="nav-item">

@@ -27,8 +27,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="positivo in positivos" :key="positivo" >
-                  <td>{{ positivo.tweet.created_at}} </td>
+                <tr v-for="positivo in positivos" :key="positivo.id" >
+                  <td>{{ positivo.tweet.created_at  }} </td>
                   <td>{{ positivo.tweet.text}}</td>
                   <td>{{ positivo.tweet.user.name}}</td>
                 </tr>
@@ -48,7 +48,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="negativo in negativos" :key="negativo" >
+                <tr v-for="negativo in negativos" :key="negativo.id" >
                   <td>{{ negativo.tweet.created_at}} </td>
                   <td>{{ negativo.tweet.text}}</td>
                   <td>{{ negativo.tweet.user.name}}</td>
@@ -58,17 +58,40 @@
           </div>
         </div>
       </div>
+      <div class="row">
+        <h2>Buscados e Classificados Automaticamente</h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Texto</th>
+                  <th>Usuário</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="novo in novos" :key="novo.id" >
+                  <td>{{ novo.tweet.created_at}} </td>
+                  <td>{{ novo.tweet.text}}</td>
+                  <td>{{ novo.tweet.user.name}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+      </div>
+
   </div>
 </template>
 <script>
 import axios from 'axios';
-
+//[ positivo.tweet.created_at, "ddd MMM DD HH:mm:ss Z YYYY"]
 export default {
   name: 'Dashboard',
   data() {
     return {
       negativos: '',
       positivos: '',
+      novos: '',
     };
   },
   created() {
@@ -83,6 +106,7 @@ export default {
           // eslint-disable-next-line
           this.negativos = JSON.parse(res.data.data.tweets_negativos);
           this.positivos = JSON.parse(res.data.data.tweets_positivos);
+          this.novos = JSON.parse(res.data.data.tweets_novos);
         })
         .catch((error) => {
           // eslint-disable-next-line

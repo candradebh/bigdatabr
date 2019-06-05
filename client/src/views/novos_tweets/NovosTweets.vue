@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h3>Modelo: {{ title }}</h3>
     <div class="row">
       <div class="col-lg-6">
         <div class="form-group">
@@ -32,7 +31,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="tweet in tweets" v-bind:key="tweet">
+          <tr v-for="tweet in tweets" v-bind:key="tweet.id">
             <td>{{tweet.title}}</td>
             <td>{{tweet.tweet}}</td>
             <td>{{tweet.sentimento}}</td>
@@ -51,7 +50,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'Treinamento',
+  name: 'NovosTweets',
   data() {
     return {
       title: '',
@@ -62,7 +61,7 @@ export default {
   },
   methods: {
     getTweets() {
-      const path = 'http://localhost:5000/analisar';
+      const path = 'http://localhost:5000/novostweets';
 
       const payload = {
         title: this.title,

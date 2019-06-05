@@ -15,8 +15,10 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.19",
     "core-js": "^2.6.5",
+    "moment": "^2.24.0",
     "path": "^0.12.7",
     "vue": "^2.6.10",
+    "vue-moment": "^4.0.0",
     "vue-router": "^3.0.3"
   },
   "devDependencies": {

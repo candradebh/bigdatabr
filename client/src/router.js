@@ -6,7 +6,7 @@ import Coleta from './components/Coleta.vue';
 import Dashboard from './views/dashboard/Dashboard.vue';
 import Ping from './components/Ping.vue';
 import Respostas from './components/Respostas.vue';
-import Treinamento from './components/Treinamento.vue';
+import NovosTweets from './views/novos_tweets/NovosTweets.vue';
 
 Vue.use(Router);
 
@@ -31,10 +31,9 @@ export default new Router({
       props: true,
     },
     {
-      path: '/treinamento',
-      name: 'Treinamento',
-      component: Treinamento,
-      props: true,
+      path: '/novostweets',
+      name: 'NovosTweets',
+      component: NovosTweets,
     },
     {
       path: '/books',

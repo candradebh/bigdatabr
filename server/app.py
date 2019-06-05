@@ -1,6 +1,7 @@
 import uuid
 import jsonpickle
 import pickle
+
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
@@ -51,9 +52,14 @@ def dashboard():
 
         tweets_positivos = banco.positivos.find()
         tweets_negativos = banco.negativos.find()
+        tweets_novos = banco.novos.find()
 
 
-        response_object['data'] = { 'tweets_positivos': json_util.dumps(tweets_positivos), 'tweets_negativos': json_util.dumps(tweets_negativos) }
+        response_object['data'] = { 
+                                    'tweets_positivos': json_util.dumps(tweets_positivos),
+                                    'tweets_negativos': json_util.dumps(tweets_negativos),
+                                    'tweets_novos': json_util.dumps(tweets_novos),
+                                  }
         
 
     return jsonify(response_object)
@@ -121,7 +127,7 @@ def respostas():
      
     return jsonify(response_object)
 
-@app.route('/analisar', methods=['POST'])
+@app.route('/novostweets', methods=['POST'])
 def analisar():
     response_object = {'status': 'success'}
     if request.method == 'POST':

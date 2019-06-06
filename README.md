@@ -30,3 +30,15 @@
     ```
 
     Acessar pela URL [http://localhost:8080](http://localhost:8080)
+
+
+
+
+## Hadoop 
+
+Intalação no windows em https://exitcondition.com/install-hadoop-windows/
+
+``` 
+$ hadoop namenode -format
+$ start-all.cmd
+``` 

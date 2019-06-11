@@ -201,6 +201,23 @@ def ping_pong():
 
 
 
+@app.route('/login', methods=['POST'])
+def login():
+    
+    if request.method == 'POST':
+        post_data = request.get_json()
+        username = post_data.get('username')
+        password =  post_data.get('password')
+        
+        if(username == 'administrador' and password =='1234'):
+            response_object = {'status': 'success'}
+            token = 'shushaduhakoakoa'
+        else:
+            response_object = {'status': 'error'}
+
+    response_object ['data'] = {'username':username, 'password':password, 'token':token }
+    
+    return jsonify(response_object)
 
 if __name__ == '__main__':
     app.run()

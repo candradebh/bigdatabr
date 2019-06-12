@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               <tr v-for="positivo in positivos" :key="positivo.id">
-                <td>{{ positivo.tweet.created_at }}</td>
+                <td>{{ moment(positivo.tweet.created_at).format("DD/MM") }}</td>
                 <td>{{ positivo.tweet.text}}</td>
                 <td>{{ positivo.tweet.user.name}}</td>
               </tr>
@@ -53,7 +53,7 @@
             </thead>
             <tbody>
               <tr v-for="negativo in negativos" :key="negativo.id">
-                <td>{{ negativo.tweet.created_at}}</td>
+                <td>{{ moment(negativo.tweet.created_at).format("DD/MM") }}</td>
                 <td>{{ negativo.tweet.text}}</td>
                 <td>{{ negativo.tweet.user.name}}</td>
               </tr>
@@ -75,7 +75,7 @@
           </thead>
           <tbody>
             <tr v-for="novo in novos" :key="novo.id">
-              <td>{{ novo.tweet.created_at}}</td>
+              <td>{{ moment(novo.tweet.created_at).format("DD/MM") }}</td>
               <td>{{ novo.tweet.text}}</td>
               <td>{{ novo.tweet.user.name}}</td>
             </tr>
@@ -96,7 +96,41 @@ export default {
       negativos: "",
       positivos: "",
       novos: "",
-
+      chartData: {
+        labels: [
+          "January",
+          "February",
+          "March",
+          "April",
+          "May",
+          "June",
+          "July"
+        ],
+        datasets: [
+          {
+            type: "line",
+            label: "Dataset 1",
+            borderColor: "rgb(54, 162, 235)",
+            borderWidth: 2,
+            fill: false,
+            data: [12, 14, 23, 21, 16, 22]
+          },
+          {
+            type: "bar",
+            label: "Dataset 2",
+            backgroundColor: "rgb(255, 99, 132)",
+            data: [12, 14, 23, 21, 16, 22],
+            borderColor: "white",
+            borderWidth: 2
+          },
+          {
+            type: "bar",
+            label: "Dataset 3",
+            backgroundColor: "rgb(75, 192, 192)",
+            data: [12, 14, 23, 21, 16, 22]
+          }
+        ]
+      },
     };
   },
   created() {
@@ -105,72 +139,26 @@ export default {
   mounted() {
     var chart = this.$refs.chart;
     var ctx = chart.getContext("2d");
-    var chartData = {
-			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			datasets: [{
-				type: 'line',
-				label: 'Dataset 1',
-				borderColor: 'rgb(54, 162, 235)',
-				borderWidth: 2,
-				fill: false,
-				data: [
-					12,
-					14,
-          23,
-          21,
-					16,
-					22,
-				]
-			}, {
-				type: 'bar',
-				label: 'Dataset 2',
-				backgroundColor: 'rgb(255, 99, 132)',
-				data: [
-					12,
-					14,
-          23,
-          21,
-					16,
-					22,
-				],
-				borderColor: 'white',
-				borderWidth: 2
-			}, {
-				type: 'bar',
-				label: 'Dataset 3',
-				backgroundColor: 'rgb(75, 192, 192)',
-				data: [
-					12,
-					14,
-          23,
-          21,
-					16,
-					22,
-				]
-			}]
 
-    };
     var config = new Chart(ctx, {
-				type: 'bar',
-				data: chartData,
-				options: {
-					responsive: true,
-					title: {
-						display: true,
-						text: 'Chart.js Combo Bar Line Chart'
-					},
-					tooltips: {
-						mode: 'index',
-						intersect: true
-					}
-				}
-			});
+      type: "bar",
+      data: this.chartData,
+      options: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Volume do Modelo de Treino x Eficiência do Algoritimo"
+        },
+        tooltips: {
+          mode: "index",
+          intersect: true
+        }
+      }
+    });
 
-
-    var myChart = new Chart(ctx,config);
+    var myChart = new Chart(ctx, config);
   },
   methods: {
-
     getTweets() {
       const path = "http://localhost:5000/dashboard";
 
@@ -186,7 +174,7 @@ export default {
           // eslint-disable-next-line
           console.error(error);
         });
-    },
+    }
   }
 };
 </script>

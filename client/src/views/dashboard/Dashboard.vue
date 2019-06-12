@@ -1,121 +1,192 @@
 <template>
   <div class="container">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap
-                  align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Compartilhar</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            Nessa semana
-          </button>
+    <div
+      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+    >
+      <h1 class="h2">Dashboard</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+          <button type="button" class="btn btn-sm btn-outline-secondary">Compartilhar</button>
+          <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
         </div>
+        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+          <span data-feather="calendar"></span>
+          Nessa semana
+        </button>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <h2>Positivos</h2>
-          <div class="table-responsive">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Texto</th>
-                  <th>Usuário</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="positivo in positivos" :key="positivo.id" >
-                  <td>{{ positivo.tweet.created_at  }} </td>
-                  <td>{{ positivo.tweet.text}}</td>
-                  <td>{{ positivo.tweet.user.name}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="col-md-6">
-          <h2>Negativos</h2>
-          <div class="table-responsive">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Texto</th>
-                  <th>Usuário</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="negativo in negativos" :key="negativo.id" >
-                  <td>{{ negativo.tweet.created_at}} </td>
-                  <td>{{ negativo.tweet.text}}</td>
-                  <td>{{ negativo.tweet.user.name}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <h2>Buscados e Classificados Automaticamente</h2>
-          <div class="table-responsive">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>Data</th>
-                  <th>Texto</th>
-                  <th>Usuário</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="novo in novos" :key="novo.id" >
-                  <td>{{ novo.tweet.created_at}} </td>
-                  <td>{{ novo.tweet.text}}</td>
-                  <td>{{ novo.tweet.user.name}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-      </div>
+    </div>
 
+    <canvas ref="chart"></canvas>
+
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Positivos</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Texto</th>
+                <th>Usuário</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="positivo in positivos" :key="positivo.id">
+                <td>{{ positivo.tweet.created_at }}</td>
+                <td>{{ positivo.tweet.text}}</td>
+                <td>{{ positivo.tweet.user.name}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h2>Negativos</h2>
+        <div class="table-responsive">
+          <table class="table table-striped table-sm">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Texto</th>
+                <th>Usuário</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="negativo in negativos" :key="negativo.id">
+                <td>{{ negativo.tweet.created_at}}</td>
+                <td>{{ negativo.tweet.text}}</td>
+                <td>{{ negativo.tweet.user.name}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <h2>Buscados e Classificados Automaticamente</h2>
+      <div class="table-responsive">
+        <table class="table table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Texto</th>
+              <th>Usuário</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="novo in novos" :key="novo.id">
+              <td>{{ novo.tweet.created_at}}</td>
+              <td>{{ novo.tweet.text}}</td>
+              <td>{{ novo.tweet.user.name}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import axios from 'axios';
-//[ positivo.tweet.created_at, "ddd MMM DD HH:mm:ss Z YYYY"]
+import axios from "axios";
+import Chart from "chart.js";
+
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
   data() {
     return {
-      negativos: '',
-      positivos: '',
-      novos: '',
+      negativos: "",
+      positivos: "",
+      novos: "",
+
     };
   },
   created() {
     this.getTweets();
   },
-  methods: {
-    getTweets() {
-      const path = 'http://localhost:5000/dashboard';
+  mounted() {
+    var chart = this.$refs.chart;
+    var ctx = chart.getContext("2d");
+    var chartData = {
+			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+			datasets: [{
+				type: 'line',
+				label: 'Dataset 1',
+				borderColor: 'rgb(54, 162, 235)',
+				borderWidth: 2,
+				fill: false,
+				data: [
+					12,
+					14,
+          23,
+          21,
+					16,
+					22,
+				]
+			}, {
+				type: 'bar',
+				label: 'Dataset 2',
+				backgroundColor: 'rgb(255, 99, 132)',
+				data: [
+					12,
+					14,
+          23,
+          21,
+					16,
+					22,
+				],
+				borderColor: 'white',
+				borderWidth: 2
+			}, {
+				type: 'bar',
+				label: 'Dataset 3',
+				backgroundColor: 'rgb(75, 192, 192)',
+				data: [
+					12,
+					14,
+          23,
+          21,
+					16,
+					22,
+				]
+			}]
 
-      axios.get(path)
-        .then((res) => {
+    };
+    var config = new Chart(ctx, {
+				type: 'bar',
+				data: chartData,
+				options: {
+					responsive: true,
+					title: {
+						display: true,
+						text: 'Chart.js Combo Bar Line Chart'
+					},
+					tooltips: {
+						mode: 'index',
+						intersect: true
+					}
+				}
+			});
+
+
+    var myChart = new Chart(ctx,config);
+  },
+  methods: {
+
+    getTweets() {
+      const path = "http://localhost:5000/dashboard";
+
+      axios
+        .get(path)
+        .then(res => {
           // eslint-disable-next-line
           this.negativos = JSON.parse(res.data.data.tweets_negativos);
           this.positivos = JSON.parse(res.data.data.tweets_positivos);
           this.novos = JSON.parse(res.data.data.tweets_novos);
         })
-        .catch((error) => {
+        .catch(error => {
           // eslint-disable-next-line
           console.error(error);
         });
     },
-
-
-  },
-
+  }
 };
 </script>

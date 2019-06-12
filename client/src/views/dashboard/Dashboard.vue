@@ -119,7 +119,7 @@ export default {
             type: "bar",
             label: "Dataset 2",
             backgroundColor: "rgb(255, 99, 132)",
-            data: [12, 14, 23, 21, 16, 22],
+            data: [15, 11, 26, 10, 11, 21],
             borderColor: "white",
             borderWidth: 2
           },
@@ -127,7 +127,7 @@ export default {
             type: "bar",
             label: "Dataset 3",
             backgroundColor: "rgb(75, 192, 192)",
-            data: [12, 14, 23, 21, 16, 22]
+            data: [18, 16, 25, 27, 16, 25]
           }
         ]
       },
@@ -159,6 +159,8 @@ export default {
     var myChart = new Chart(ctx, config);
   },
   methods: {
+
+
     getTweets() {
       const path = "http://localhost:5000/dashboard";
 

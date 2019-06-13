@@ -32,7 +32,7 @@
             </thead>
             <tbody>
               <tr v-for="positivo in positivos" :key="positivo.id">
-                <td>{{ moment(positivo.tweet.created_at).format("DD/MM") }}</td>
+                <td>{{ moment(positivo.tweet.created_at).format("DD/MM/YYYY") }}</td>
                 <td>{{ positivo.tweet.text}}</td>
                 <td>{{ positivo.tweet.user.name}}</td>
               </tr>
@@ -53,7 +53,7 @@
             </thead>
             <tbody>
               <tr v-for="negativo in negativos" :key="negativo.id">
-                <td>{{ moment(negativo.tweet.created_at).format("DD/MM") }}</td>
+                <td>{{ moment(negativo.tweet.created_at).format("DD/MM/YYYY") }}</td>
                 <td>{{ negativo.tweet.text}}</td>
                 <td>{{ negativo.tweet.user.name}}</td>
               </tr>
@@ -75,7 +75,7 @@
           </thead>
           <tbody>
             <tr v-for="novo in novos" :key="novo.id">
-              <td>{{ moment(novo.tweet.created_at).format("DD/MM") }}</td>
+              <td>{{ moment(novo.tweet.created_at).format("DD/MM/YYYY") }}</td>
               <td>{{ novo.tweet.text}}</td>
               <td>{{ novo.tweet.user.name}}</td>
             </tr>

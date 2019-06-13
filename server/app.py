@@ -53,12 +53,14 @@ def dashboard():
         tweets_positivos = banco.positivos.find()
         tweets_negativos = banco.negativos.find()
         tweets_novos = banco.novos.find()
+        tweets_estatisticas = banco.estatisticas.find()
 
 
         response_object['data'] = { 
                                     'tweets_positivos': json_util.dumps(tweets_positivos),
                                     'tweets_negativos': json_util.dumps(tweets_negativos),
                                     'tweets_novos': json_util.dumps(tweets_novos),
+                                    'tweets_estatisticas': json_util.dumps(tweets_estatisticas),
                                   }
         
 
@@ -155,11 +157,11 @@ def analisar():
             positivos.append(tweet)
             dados_treinamento.append([formatar_sentenca(texto), "positivo"])
 
-            
+        #print('num' + str( len(dados_treinamento) ) )    
         
-        
+        # cria o arquivo modelo 
         modelo = NaiveBayesClassifier.train(dados_treinamento)
-        with open('cruzeiro.obj', 'wb') as f:
+        with open(title + '.obj', 'wb') as f:
            modelo_serial = pickle.dump(modelo, f)
 
 

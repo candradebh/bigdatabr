@@ -13,6 +13,7 @@ from nltk.classify import NaiveBayesClassifier
 
 #Banco de Dados
 from pymongo import MongoClient
+#clienteMongo = MongoClient('192.168.82.118', 27017,username='root', password='root')
 clienteMongo = MongoClient('localhost', 27017)
 banco = clienteMongo.igti
 
@@ -119,9 +120,9 @@ def respostas():
             
 
         if len(positivos)>0:
-             tweets_positivos.insert(positivos)
+             tweets_positivos.insert_many(positivos)
         if len(negativos)>0:
-            tweets_negativos.insert(negativos)
+            tweets_negativos.insert_many(negativos)
         
         response_object['message'] = 'Tweets armazenados no banco de dados'
         response_object['title'] = title

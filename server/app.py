@@ -173,7 +173,7 @@ def analisar():
             except OSError as exc: # Guard against race condition
                 if exc.errno != errno.EEXIST:
                     raise
-
+        
 
         with open(filename, 'wb') as f:
            modelo_serial = pickle.dump(modelo, f)

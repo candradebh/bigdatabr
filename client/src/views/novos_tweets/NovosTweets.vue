@@ -26,8 +26,9 @@
           <tr>
             <td>Data</td>
             <td>Texto</td>
-            <td>Usuário</td>
-            <td>Sentimento</td>
+            <td>sentimento</td>
+            <td>Avaliar</td>
+            <td>Res. Avaliação</td>
           </tr>
         </thead>
         <tbody>
@@ -36,9 +37,10 @@
             <td>{{tweet.tweet}}</td>
             <td>{{tweet.sentimento}}</td>
             <td>
-              <button class="btn btn-danger" @click="tweet.avaliacao = 'N'">Errou</button>
-              <button class="btn btn-success" @click="tweet.avaliacao = 'P'">Acertou</button>
+              <button class="btn btn-sm btn-danger" @click="tweet.avaliacao = 'N'">Errou</button>
+              <button class="btn btn-sm btn-success" @click="tweet.avaliacao = 'P'">Acertou</button>
             </td>
+            <td>{{tweet.avaliacao}}</td>
           </tr>
         </tbody>
       </table>

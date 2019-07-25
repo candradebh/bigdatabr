@@ -1,6 +1,8 @@
 import uuid
 import jsonpickle
 import pickle
+import os
+import errno
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -143,6 +145,7 @@ def analisar():
         title = post_data.get('title')
 
         tweets_novos = banco.novos
+        #pesquisa os negativos e positivos para criar um modelo
         tweets_positivos = banco.positivos.find({'title':title})
         tweets_negativos = banco.negativos.find({'title':title})
         #tweets_modelo = banco.modelo dumps(banco.tweets.find({'name':title}))
@@ -162,7 +165,17 @@ def analisar():
         
         # cria o arquivo modelo 
         modelo = NaiveBayesClassifier.train(dados_treinamento)
-        with open(title + '.obj', 'wb') as f:
+
+        filename = './modelos/'+title+'.obj'
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc: # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
+
+        with open(filename, 'wb') as f:
            modelo_serial = pickle.dump(modelo, f)
 
 

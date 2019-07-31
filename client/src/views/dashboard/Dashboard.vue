@@ -94,12 +94,13 @@ export default {
   extends: Line,
   data() {
     return {
-      negativos: "",
-      positivos: "",
-      novos: "",
+      negativos: [],
+      positivos: [],
+      novos: [],
       estatisticas: [],
       indice: [],
       volume: [],
+      labels: [],
 
     };
   },
@@ -135,6 +136,7 @@ export default {
           for (var i = 0; i < this.estatisticas.length; i++) {
             this.volume.push(this.estatisticas[i].tam_modelo);
             this.indice.push(this.estatisticas[i].indice);
+            this.labels.push(this.estatisticas[i].title)
           }
 
         })
@@ -147,16 +149,7 @@ export default {
       let chartData = {
         type: "bar",
         data: {
-          labels: [
-            "Mercury",
-            "Venus",
-            "Earth",
-            "Mars",
-            "Jupiter",
-            "Saturn",
-            "Uranus",
-            "Neptune"
-          ],
+          labels: this.labels,
           datasets: [
             {
               label: 'Indice de acerto',

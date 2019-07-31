@@ -3,6 +3,7 @@ import jsonpickle
 import pickle
 import os
 import errno
+from textblob import TextBlob
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -43,6 +44,10 @@ app.config.from_object(__name__)
 # enable CORS
 CORS(app, resources={r'/*': {'origins': '*'}})
 
+def get_tweet_text(data) : 
+
+    return data.full_text     
+    
 
 def formatar_sentenca(sentenca):
    return {palavra: True for palavra in word_tokenize(sentenca)}
@@ -81,10 +86,12 @@ def coleta():
         consulta = 'place:1b107df3ccc0aaa1 "' + title + '" '
         numMaxTweets = 10
         tweets_buscados = []
-        for tweet in tweepy.Cursor(api.search, q=consulta).items(numMaxTweets):
+        for tweet in tweepy.Cursor(api.search, q=consulta, tweet_mode='extended').items(numMaxTweets):
             # tweets.insert({ 'name': title , 'sentimento':'','avaliacao':'', 'tweet': tweet._json })
+            texto = get_tweet_text(tweet)
+            #print(f"{texto}")
             tweets_buscados.append({'title': title, 'sentimento': '', 'avaliacao': '',
-                                    'tweet': tweet._json})
+                                    'text':texto, 'tweet': tweet._json})
 
         response_object['message'] = 'Retornados ' + str(numMaxTweets) + ' tweets '
         response_object['data'] = tweets_buscados
@@ -139,24 +146,30 @@ def analisar():
         title = post_data.get('title')
 
         #pesquisa os negativos e positivos para criar um modelo
-        tweets_positivos = banco.positivos.find({'title':title})
+        tweets_positivos = banco.positivos.find()
         #tweets_positivos = banco.positivos.find()
-        tweets_negativos = banco.negativos.find({'title':title})
+        tweets_negativos = banco.negativos.find()
         #tweets_negativos = banco.negativos.find()
         #tweets_modelo = banco.modelo dumps(banco.tweets.find({'name':title}))
-        print(title)
-        print(tweets_negativos)
+        print (f"positivos {tweets_positivos.count()}")
+        print (f"negativos {tweets_negativos.count()}")
+
+        if tweets_negativos.count() == 0 and tweets_positivos.count() == 0 :
+            response_object['message'] = 'Não existe nenhum modelo treinado ainda no sistema.'
+
         tam_modelo = 0
         #Dados de Treinamento
         for tweet in tweets_negativos:
             tam_modelo+=1
-            texto = tweet['tweet']['text']
+            texto = tweet['text']
+            print(f"conteudo negativo {texto}")
             negativos.append(tweet)
             dados_treinamento.append([formatar_sentenca(texto), "negativo"])
 
         for tweet in tweets_positivos:
             tam_modelo+=1
-            texto = tweet['tweet']['text']
+            texto = tweet['text']
+            print(f"conteudo positivo {texto}")
             positivos.append(tweet)
             dados_treinamento.append([formatar_sentenca(texto), "positivo"])
 
@@ -189,9 +202,10 @@ def analisar():
         media_negativos = 0
 
         resultado = []
-        for tweet in tweepy.Cursor(api.search, q=consulta).items(numMaxTweets):
+        for tweet in tweepy.Cursor(api.search, q=consulta, tweet_mode='extended').items(numMaxTweets):
             # print(f"{tweet.user.name} said: {tweet.text}")
-            sentenca = tweet.text
+            sentenca = get_tweet_text(tweet)
+            print(f"Texto {sentenca}")
             sentimento = modelo.classify(formatar_sentenca(sentenca.lower()))
             if sentimento == 'positivo':
                 num_positivos+=1
@@ -201,7 +215,7 @@ def analisar():
                 sent = 'N'
             
             resultado.append({'title': title, 'sentimento': sent, 'avaliacao': '',
-                                    'tweet': sentenca})
+                                   'text':sentenca, 'tweet': sentenca})
         if num_positivos > 0 :
             media_positivos = (num_negativos + num_positivos) / num_positivos
         if num_negativos > 0 : 

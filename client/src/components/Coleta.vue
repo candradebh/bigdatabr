@@ -27,8 +27,8 @@
           </thead>
           <tbody>
             <tr v-for="tweet in tweets" v-bind:key="tweet.id">
-              <td>{{tweet.tweet.created_at}}</td>
-              <td>{{tweet.tweet.text}}</td>
+              <td>{{moment(tweet.tweet.created_at).format("DD/MM/YYYY") }}</td>
+              <td>{{tweet.text || tweet.tweet.full_text}}</td>
               <td>{{tweet.tweet.user.name}}</td>
               <td align="center">
                 <div class="btn-group">

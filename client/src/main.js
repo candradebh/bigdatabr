@@ -11,14 +11,14 @@ import router from './router';
 
 import SearchMain from './components/SearchMain.vue';
 import Navbar from './components/Navbar.vue';
+import LineChart from './components/LineChart.vue';
 
 
 Vue.prototype.moment = moment;
 
-
 Vue.component('search-main', SearchMain);
 Vue.component('side-menu', Navbar);
-
+Vue.component('line-chart', LineChart);
 
 library.add(fas);
 Vue.component('font-awesome-icon', FontAwesomeIcon);

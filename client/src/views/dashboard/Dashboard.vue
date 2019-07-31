@@ -1,28 +1,28 @@
 <template>
-  <div class="container">
+  <div class='container'>
     <div
-      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+      class='d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom'
     >
-      <h1 class="h2">Dashboard</h1>
-      <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group mr-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary">Compartilhar</button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">Exportar</button>
+      <h1 class='h2'>Dashboard</h1>
+      <div class='btn-toolbar mb-2 mb-md-0'>
+        <div class='btn-group mr-2'>
+          <button type='button' class='btn btn-sm btn-outline-secondary'>Compartilhar</button>
+          <button type='button' class='btn btn-sm btn-outline-secondary'>Exportar</button>
         </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-          <span data-feather="calendar"></span>
+        <button type='button' class='btn btn-sm btn-outline-secondary dropdown-toggle'>
+          <span data-feather='calendar'></span>
           Nessa semana
         </button>
       </div>
     </div>
 
-    <canvas ref="chart"></canvas>
+    <canvas ref='chart'></canvas>
 
-    <div class="row">
-      <div class="col-md-6">
+    <div class='row'>
+      <div class='col-md-6'>
         <h2>Positivos</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
+        <div class='table-responsive'>
+          <table class='table table-striped table-sm'>
             <thead>
               <tr>
                 <th>Data</th>
@@ -31,8 +31,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="positivo in positivos" :key="positivo.id">
-                <td>{{ moment(positivo.tweet.created_at).format("DD/MM/YYYY") }}</td>
+              <tr v-for='positivo in positivos' :key='positivo.id'>
+                <td>{{ moment(positivo.tweet.created_at).format('DD/MM/YYYY') }}</td>
                 <td>{{ positivo.text}}</td>
                 <td>{{ positivo.tweet.user.name}}</td>
               </tr>
@@ -40,10 +40,10 @@
           </table>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class='col-md-6'>
         <h2>Negativos</h2>
-        <div class="table-responsive">
-          <table class="table table-striped table-sm">
+        <div class='table-responsive'>
+          <table class='table table-striped table-sm'>
             <thead>
               <tr>
                 <th>Data</th>
@@ -52,8 +52,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="negativo in negativos" :key="negativo.id">
-                <td>{{ moment(negativo.tweet.created_at).format("DD/MM/YYYY") }}</td>
+              <tr v-for='negativo in negativos' :key='negativo.id'>
+                <td>{{ moment(negativo.tweet.created_at).format('DD/MM/YYYY') }}</td>
                 <td>{{ negativo.text}}</td>
                 <td>{{ negativo.tweet.user.name}}</td>
               </tr>
@@ -62,10 +62,10 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class='row'>
       <h2>Buscados e Classificados Automaticamente</h2>
-      <div class="table-responsive">
-        <table class="table table-striped table-sm">
+      <div class='table-responsive'>
+        <table class='table table-striped table-sm'>
           <thead>
             <tr>
               <th>Data</th>
@@ -74,8 +74,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="novo in novos" :key="novo.id">
-              <td>{{ moment(novo.tweet.created_at).format("DD/MM/YYYY") }}</td>
+            <tr v-for='novo in novos' :key='novo.id'>
+              <td>{{ moment(novo.tweet.created_at).format('DD/MM/YYYY') }}</td>
               <td>{{ novo.text}}</td>
               <td>{{ novo.tweet.user.name}}</td>
             </tr>
@@ -86,72 +86,65 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import Chart from "chart.js";
+import axios from 'axios';
+import Chart from 'chart.js';
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   data() {
     return {
-      negativos: "",
-      positivos: "",
-      novos: "",
-      estatisticas:[],
-      indice:[],
-      volume:[],
+      negativos: '',
+      positivos: '',
+      novos: '',
+      estatisticas: [],
+      indice: [],
+      volume: [],
       chartData: {
         labels: [
-          "100",
-          "200",
-          "300",
-          "400",
+          '100',
+          '200',
+          '300',
+          '400',
         ],
-        datasets: [
-
-        ]
+        datasets: [],
       },
     };
   },
   created() {
-
-
-
-
+    this.getTweets();
   },
   mounted() {
-    this.getTweets();
-
     this.chartData.datasets.push({
-            type: "line",
-            label: "Indice de acertos",
-            borderColor: "rgb(54, 162, 235)",
+            type: 'line',
+            label: 'Indice de acertos',
+            borderColor: 'rgb(54, 162, 235)',
             borderWidth: 2,
             fill: false,
             data: this.indice
           });
     this.chartData.datasets.push({
-            type: "line",
-            label: "Volume",
-            backgroundColor: "rgb(255, 99, 132)",
+            type: 'line',
+            label: 'Volume',
+            backgroundColor: 'rgb(255, 99, 132)',
             data: this.volume,
-            borderColor: "white",
+            borderColor: 'white',
             borderWidth: 2
           });
 
     var chart = this.$refs.chart;
-    var ctx = chart.getContext("2d");
+    var ctx = chart.getContext('2d');
 
     var config = new Chart(ctx, {
-      type: "bar",
+      type: 'bar',
       data: this.chartData,
       options: {
         responsive: true,
         title: {
           display: true,
-          text: "Volume do Modelo de Treino x Eficiência do Algoritimo"
+          text: 'Volume do Modelo de Treino x Eficiência do Algoritimo'
         },
         tooltips: {
-          mode: "index",
+          mode: 'index',
           intersect: true
         }
       }
@@ -163,7 +156,7 @@ export default {
 
 
     getTweets() {
-      const path = "http://localhost:5000/dashboard";
+      const path = 'http://localhost:5000/dashboard';
 
       axios
         .get(path)

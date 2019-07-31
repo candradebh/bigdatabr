@@ -29,8 +29,10 @@
             <td>{{tweet.text || tweet.tweet.full_text}}</td>
             <td>{{tweet.tweet.user.name}}</td>
             <td align="center">
-              <font-awesome-icon icon="thumbs-down" color="red" size="xs" v-if="tweet.sentimento=='N'"/>
-              <font-awesome-icon icon="thumbs-up" color="green" size="xs" v-if="tweet.sentimento=='P'"/>
+              <font-awesome-icon icon="thumbs-down" color="red"
+                                 size="xs" v-if="tweet.sentimento=='N'"/>
+              <font-awesome-icon icon="thumbs-up" color="green"
+                                 size="xs" v-if="tweet.sentimento=='P'"/>
             </td>
           </tr>
         </tbody>

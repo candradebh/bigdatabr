@@ -4,6 +4,11 @@ import pickle
 import os
 import errno
 from textblob import TextBlob
+import socket
+import sys
+import requests
+import requests_oauthlib
+import json
 
 from flask import Flask, jsonify, request
 from flask_cors import CORS
@@ -31,8 +36,13 @@ CONSUMER_API_SECRET = "f3e9oFfDfw3MA8ZmrV6QbeSthUDO8UTdb3TFrOsdkGmWRmmzCx"
 ACCESS_TOKEN = "92998645-EphmhVfonqO2YbXtBmRIcgZSpA6aoGt6nNPD8JAI9"
 ACCESS_TOKEN_SECRET = "0MbzoFCMq4LrGcya8ro2XMrjBifteujAa3NnVsgepHDG4"
 
+ # CONEXAO TWEETPY   
 auth = tweepy.AppAuthHandler(CONSUMER_API_KEY, CONSUMER_API_SECRET)
 api = tweepy.API(auth)
+
+
+#my_auth = requests_oauthlib.OAuth1(CONSUMER_API_KEY, CONSUMER_API_SECRET,ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+
 
 # configuration
 DEBUG = True
@@ -55,6 +65,7 @@ def formatar_sentenca(sentenca):
 # sanity check route
 @app.route('/dashboard', methods=['GET'])
 def dashboard():
+    
     response_object = {'status': 'success'}
     if request.method == 'GET':
 
@@ -274,6 +285,25 @@ def avaliacao():
 def ping_pong():
     return jsonify('pong!')
 
+def get_tweets():
+    url = 'https://stream.twitter.com/1.1/statuses/filter.json'
+    query_data = [('language', 'en'), ('locations', '-130,-20,100,50'),('track','#')]
+    query_url = url + '?' + '&'.join([str(t[0]) + '=' + str(t[1]) for t in query_data])
+    response = requests.get(query_url, auth=my_auth, stream=True)
+    print(query_url, response)
+    return response
+
+def send_tweets_to_spark(http_resp, tcp_connection):
+    for line in http_resp.iter_lines():
+        try:
+            full_tweet = json.loads(line)
+            tweet_text = full_tweet['text']
+            print("Tweet Text: " + tweet_text)
+            print ("------------------------------------------")
+            tcp_connection.send(tweet_text + '\n')
+        except:
+         e = sys.exc_info()[0]
+         print("Error: %s" % e)
 
 
 if __name__ == '__main__':

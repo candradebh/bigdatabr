@@ -7,13 +7,11 @@
       type="button"
       class="btn btn-primary"
       @click="enviarRespostas"
-      v-if="showMessage==false"
-    >Gravar modelo</button>
+      v-if="showMessage==false" >Gravar modelo</button>
     <router-link
-      :to="{ name: 'Treinamento', params: { title: this.title }}"
+      :to="{ name: 'NovosTweets', params: { title: this.title }}"
       class="btn btn-danger"
-      v-if="showMessage==true"
-    >Gerar Treinamento</router-link>
+      v-if="showMessage==true">Buscar novos Tweets</router-link>
 
     <div class="row" v-if="tweets">
       <table class="table table-hover table-bordered table-striped">
@@ -26,13 +24,13 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="tweet in tweets" v-bind:key="tweet">
+          <tr v-for="tweet in tweets" v-bind:key="tweet.id">
             <td>{{tweet.tweet.created_at}}</td>
             <td>{{tweet.tweet.text}}</td>
             <td>{{tweet.tweet.user.name}}</td>
             <td align="center">
-              <font-awesome-icon icon="thumbs-down" size="xs" v-if="tweet.sentimento=='N'"/>
-              <font-awesome-icon icon="thumbs-up" size="xs" v-if="tweet.sentimento=='P'"/>
+              <font-awesome-icon icon="thumbs-down" color="red" size="xs" v-if="tweet.sentimento=='N'"/>
+              <font-awesome-icon icon="thumbs-up" color="green" size="xs" v-if="tweet.sentimento=='P'"/>
             </td>
           </tr>
         </tbody>

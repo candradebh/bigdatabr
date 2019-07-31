@@ -96,47 +96,48 @@ export default {
       negativos: "",
       positivos: "",
       novos: "",
+      estatisticas:[],
+      indice:[],
+      volume:[],
       chartData: {
         labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July"
+          "100",
+          "200",
+          "300",
+          "400",
         ],
         datasets: [
-          {
-            type: "line",
-            label: "Dataset 1",
-            borderColor: "rgb(54, 162, 235)",
-            borderWidth: 2,
-            fill: false,
-            data: [12, 14, 23, 21, 16, 22]
-          },
-          {
-            type: "bar",
-            label: "Dataset 2",
-            backgroundColor: "rgb(255, 99, 132)",
-            data: [15, 11, 26, 10, 11, 21],
-            borderColor: "white",
-            borderWidth: 2
-          },
-          {
-            type: "bar",
-            label: "Dataset 3",
-            backgroundColor: "rgb(75, 192, 192)",
-            data: [18, 16, 25, 27, 16, 25]
-          }
+
         ]
       },
     };
   },
   created() {
-    this.getTweets();
+
+
+
+
   },
   mounted() {
+    this.getTweets();
+
+    this.chartData.datasets.push({
+            type: "line",
+            label: "Indice de acertos",
+            borderColor: "rgb(54, 162, 235)",
+            borderWidth: 2,
+            fill: false,
+            data: this.indice
+          });
+    this.chartData.datasets.push({
+            type: "line",
+            label: "Volume",
+            backgroundColor: "rgb(255, 99, 132)",
+            data: this.volume,
+            borderColor: "white",
+            borderWidth: 2
+          });
+
     var chart = this.$refs.chart;
     var ctx = chart.getContext("2d");
 
@@ -171,6 +172,11 @@ export default {
           this.negativos = JSON.parse(res.data.data.tweets_negativos);
           this.positivos = JSON.parse(res.data.data.tweets_positivos);
           this.novos = JSON.parse(res.data.data.tweets_novos);
+          this.estatisticas = JSON.parse(res.data.data.tweets_estatisticas);
+          for(var i=0;i<this.estatisticas.length;i++){
+            this.volume.push(this.estatisticas[i].tam_modelo);
+            this.indice.push(this.estatisticas[i].indice);
+          }
         })
         .catch(error => {
           // eslint-disable-next-line

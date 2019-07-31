@@ -2,22 +2,13 @@
   <div class="container">
     <alert :message=message v-if="showMessage"></alert>
     <div class="row">
-      <div class="col-lg-4">
+      <div class="col-lg-6">
         <div class="form-group">
-          <label for="texto">Texto</label>
+          <label for="texto">Conteúdo para analise</label>
           <input type="text" v-model="texto" class="form-control">
         </div>
       </div>
-      <div class="col-lg-4">
-        <div class="form-group">
-          <label for="tipo">Tipo</label>
-          <select id="tipo" v-model="tipo" class="form-control">
-              <option value="conteudo">Conteúdo</option>
-              <option value="hashtag">HashTag</option>
-              <option value="usuario">Usuário</option>
-          </select>
-        </div>
-      </div>
+
       <div class="col-lg-1">
         <br>
         <button type="button" class="btn btn-primary" @click="getTweets">Buscar</button>
@@ -41,10 +32,14 @@
               <td>{{tweet.tweet.user.name}}</td>
               <td align="center">
                 <div class="btn-group">
-                  <button class="btn btn-danger" @click="tweet.sentimento = 'N'">
+                  <button class="btn btn-secondary" aria-pressed="true"
+                           v-bind:class="{ 'btn-danger': tweet.sentimento == 'N' }"
+                          @click="tweet.sentimento = 'N'">
                     <font-awesome-icon icon="thumbs-down" size="xs" />
                   </button>
-                  <button class="btn btn-success" @click="tweet.sentimento = 'P'">
+                  <button class="btn btn-secondary" aria-pressed="true"
+                          v-bind:class="{ 'btn-success': tweet.sentimento == 'P' }"
+                          @click="tweet.sentimento = 'P'">
                     <font-awesome-icon icon="thumbs-up" size="xs" />
                   </button>
                 </div>
@@ -74,7 +69,6 @@ export default {
   data() {
     return {
       texto: '',
-      tipo: '',
       tweets: '',
       showMessage: false,
     };

@@ -90,7 +90,7 @@ import Chart from "chart.js";
 import { Line } from "vue-chartjs";
 
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   extends: Line,
   data() {
     return {

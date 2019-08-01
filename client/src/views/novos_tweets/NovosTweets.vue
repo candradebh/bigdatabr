@@ -120,18 +120,18 @@ export default {
   },
   methods: {
     avaliar(tweet, avaliacao) {
-      if (avaliacao === 'acertou') {
+      if (avaliacao == 'acertou') {
         tweet.avaliacao = tweet.sentimento;
-        num_acertos++;
+        this.num_acertos++;
       } else {
-        if (tweet.sentimento === 'P') {
+        if (tweet.sentimento == 'P') {
           tweet.avaliacao = 'N';
         } else {
           tweet.avaliacao = 'P';
         }
       }
 
-      if (tweet.avaliacao !== '') {
+      if (tweet.avaliacao != '') {
         this.avaliados++;
       }
       this.indice = (this.num_acertos * 100) / this.total;

@@ -122,7 +122,7 @@ export default {
     avaliar(tweet, avaliacao) {
       if (avaliacao == 'acertou') {
         tweet.avaliacao = tweet.sentimento;
-        this.num_acertos++;
+
       } else {
         if (tweet.sentimento == 'P') {
           tweet.avaliacao = 'N';
@@ -131,10 +131,26 @@ export default {
         }
       }
 
-      if (tweet.avaliacao != '') {
-        this.avaliados++;
+      this.getIndicadores();
+
+
+    },
+    getIndicadores(){
+      this.avaliados = 0;
+      this.num_acertos = 0;
+      for (var prop in this.tweets) {
+          if ( this.tweets.hasOwnProperty(prop) ) {
+              //console.log(this.tweets[prop])
+              if(this.tweets[prop].avaliacao != ''){
+                this.avaliados++;
+                if(this.tweets[prop].avaliacao == this.tweets[prop].sentimento){
+                  this.num_acertos++;
+                }
+              }
+          }
       }
       this.indice = (this.num_acertos * 100) / this.total;
+
     },
     getTweets() {
       const path = 'http://localhost:5000/novostweets';

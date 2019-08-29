@@ -82,7 +82,7 @@ export default {
       volume: [],
       labels: [],
       chartTrending:'',
-      chartDataTrending: [],
+      chartDataTrending: '',
       labelsTrending: [],
       valuesTrending: [],
       modelo:{
@@ -95,14 +95,13 @@ export default {
     };
   },
   created() {
-    this.getChartTrending();
 
 
   },
   mounted() {
 
     this.createChart("chartjs", this.getChartData());
-    this.chartTrending = this.createChartTrending("chart", this.chartDataTrending);
+    this.createChartTrending("chart", this.getChartTrending());
     this.getStream();
     this.getTweets();
   },
@@ -117,7 +116,7 @@ export default {
     },
     createChartTrending(chartId, chartData) {
       const ctx = document.getElementById(chartId);
-      return new Chart(ctx, {
+      this.chartTrending = new Chart(ctx, {
         type: chartData.type,
         data: chartData.data,
         options: chartData.options
@@ -138,9 +137,9 @@ export default {
                     console.error(error);
                   });
 
-                this.chartDataTrending.data.labels = this.labelsTrending;
-                this.chartDataTrending.data.datasets[0].data = this.valuesTrending;
-                this.chartTrending.update();
+                //this.chartDataTrending.data.labels = this.labelsTrending;
+                //this.chartDataTrending.data.datasets[0].data = this.valuesTrending;
+                //this.chartTrending.update();
 
             },1000);
     },
@@ -207,15 +206,15 @@ export default {
         }
       };
 
-    return chartData;
+      return chartData;
 
     },
     getChartTrending(){
 
-           this.chartDataTrending = {
+          return {
                 type: 'horizontalBar',
                 data: {
-                    labels: [this.labelsTrending],
+                    labels: this.labelsTrending,
                     datasets: [{
                         label: '# of Mentions',
                         data: [this.valuesTrending],
@@ -258,13 +257,6 @@ export default {
                     }
                 }
            };
-
-
-
-
-
-
-
     }
   }
 };

@@ -17,7 +17,51 @@
     </div>
     <canvas id="chartjs"></canvas>
 
+    <hr />
+    <br />
+    <h1 class="h2">Modelo de dados</h1>
 
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+          <div class="card-header">Tamanho</div>
+          <div class="card-body">
+            <h5 class="card-title">{{modelo.tamanho}} tweets</h5>
+            <p class="card-text">Tamanho do modelo</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+          <div class="card-header">Positivos</div>
+          <div class="card-body">
+            <h5 class="card-title">{{positivos.length}} tweets</h5>
+            <p
+              class="card-text"
+            >Indice de acertos, selecionar novos com avaliação diferente de null e realizar a conta de porcentagem</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+          <div class="card-header">Negativos</div>
+          <div class="card-body">
+            <h5 class="card-title">{{negativos.length}} tweets</h5>
+            <p class="card-text">Tamanho do modelo</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <br>
+    <div class="row">
+      <center>
+        <h2>Top Trending Twitter Hashtags</h2>
+        <div style="width:700px;height=500px">
+          <canvas id="chart"></canvas>
+        </div>
+      </center>
+    </div>
   </div>
 </template>
 <script>
@@ -37,18 +81,32 @@ export default {
       indice: [],
       volume: [],
       labels: [],
+      chartTrending:'',
+      chartDataTrending: [],
+      labelsTrending: [],
+      valuesTrending: [],
+      modelo:{
+        tamanho:0,
+        positivos:0,
+        negativos:0,
+
+      }
 
     };
   },
   created() {
-    this.getTweets();
+    this.getChartTrending();
+
 
   },
   mounted() {
+
     this.createChart("chartjs", this.getChartData());
+    this.chartTrending = this.createChartTrending("chart", this.chartDataTrending);
+    this.getStream();
+    this.getTweets();
   },
   methods: {
-
     createChart(chartId, chartData) {
       const ctx = document.getElementById(chartId);
       const myChart = new Chart(ctx, {
@@ -57,7 +115,35 @@ export default {
         options: chartData.options
       });
     },
+    createChartTrending(chartId, chartData) {
+      const ctx = document.getElementById(chartId);
+      return new Chart(ctx, {
+        type: chartData.type,
+        data: chartData.data,
+        options: chartData.options
+      });
+    },
+    getStream(){
+              setInterval(function(){
+                const path = "http://localhost:5000/refreshData";
+                axios
+                  .get(path)
+                  .then(res => {
+                    // eslint-disable-next-line
+                    this.labelsTrending = res.data.sLabel;
+                    this.valuesTrending = res.data.sData;
+                  })
+                  .catch(error => {
+                    // eslint-disable-next-line
+                    console.error(error);
+                  });
 
+                this.chartDataTrending.data.labels = this.labelsTrending;
+                this.chartDataTrending.data.datasets[0].data = this.valuesTrending;
+                this.chartTrending.update();
+
+            },1000);
+    },
     getTweets() {
       const path = "http://localhost:5000/dashboard";
 
@@ -122,6 +208,62 @@ export default {
       };
 
     return chartData;
+
+    },
+    getChartTrending(){
+
+           this.chartDataTrending = {
+                type: 'horizontalBar',
+                data: {
+                    labels: [this.labelsTrending],
+                    datasets: [{
+                        label: '# of Mentions',
+                        data: [this.valuesTrending],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)',
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }
+           };
+
+
+
+
+
+
 
     }
   }

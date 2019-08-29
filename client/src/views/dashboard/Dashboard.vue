@@ -60,7 +60,15 @@
       <center>
         <h2>Top Trending Twitter Hashtags</h2>
         <div style="width:700px;height=500px">
-          <canvas id="chart"></canvas>
+          <stream-chart :labels="labelsTrending" :data="chartDataTrending" :options="{
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero:true
+                            }
+                        }]
+                    }
+                }"></stream-chart>
         </div>
       </center>
     </div>
@@ -96,12 +104,12 @@ export default {
   },
   created() {
 
-
+    this.chartDataTrending = this.getChartTrending();
   },
   mounted() {
 
     this.createChart("chartjs", this.getChartData());
-    this.createChartTrending("chart", this.getChartTrending());
+    //this.createChartTrending("chart", this.chartDataTrending);
     this.getStream();
     this.getTweets();
   },
@@ -129,16 +137,17 @@ export default {
                   .get(path)
                   .then(res => {
                     // eslint-disable-next-line
-                    this.labelsTrending = res.data.sLabel;
-                    this.valuesTrending = res.data.sData;
+                        this.labelsTrending = res.data.sLabel;
+                        this.valuesTrending = res.data.sData;
+
                   })
                   .catch(error => {
                     // eslint-disable-next-line
                     console.error(error);
                   });
 
-                //this.chartDataTrending.data.labels = this.labelsTrending;
-                //this.chartDataTrending.data.datasets[0].data = this.valuesTrending;
+                //this.chartTrending.data.labels = this.labelsTrending;
+                //this.chartTrending.data.datasets[0].data = this.valuesTrending;
                 //this.chartTrending.update();
 
             },1000);
@@ -234,7 +243,7 @@ export default {
           return {
                 type: 'horizontalBar',
                 data: {
-                    labels: this.labelsTrending,
+                    labels: [this.labelsTrending],
                     datasets: [{
                         label: '# of Mentions',
                         data: [this.valuesTrending],

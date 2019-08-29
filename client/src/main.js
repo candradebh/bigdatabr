@@ -7,6 +7,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import moment from 'moment';
 import VueNumerals from 'vue-numerals';
+import VueChartJs from 'vue-chartjs';
 import App from './App.vue';
 import router from './router';
 
@@ -29,6 +30,46 @@ Vue.use(BootstrapVue);
 
 
 Vue.config.productionTip = false;
+
+Vue.component('stream-chart', {
+  extends: VueChartJs.HorizontalBar,
+  props: ['labels', 'data', 'options'],
+  mounted() {
+    this.renderLineChart();
+  },
+  computed: {
+    chartData() {
+      return this.data;
+    },
+    chartLabel() {
+      return this.labels;
+    },
+  },
+  methods: {
+    renderLineChart() {
+      this.renderChart(
+        {
+          labels: this.chartLabel,
+          datasets: [
+            {
+              label: 'Data One',
+              backgroundColor: '#f87979',
+              data: this.chartData,
+            },
+          ],
+        },
+        { responsive: true, maintainAspectRatio: false },
+      );
+    },
+  },
+  watch: {
+    data() {
+      this._chart.destroy();
+      // this.renderChart(this.data, this.options);
+      this.renderLineChart();
+    },
+  },
+});
 
 
 new Vue({

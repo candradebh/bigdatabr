@@ -45,12 +45,14 @@ def process_rdd(time, rdd):
     print("----------- %s -----------" % str(time))
     try:
         # Get spark sql singleton context from the current context
-        print("contexto")
+        print("Pegando o scontexto")
         sql_context = get_sql_context_instance(rdd.context)
         
         # convert the RDD to Row RDD
-        print("RDD")
+        print("Convertendo RDD em Row RDD")
         row_rdd = rdd.map(lambda w: Row(hashtag=w[0], hashtag_count=w[1]))
+        print(row_rdd)
+
         # create a DF from the Row RDD
         print("Hashtags_DF")
         hashtags_df = sql_context.createDataFrame(row_rdd)

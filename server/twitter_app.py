@@ -3,6 +3,7 @@ import sys
 import requests
 import requests_oauthlib
 import json
+from unidecode import unidecode
 
 # Replace the values below with yours
 CONSUMER_KEY = "PMrkmRMQy3n7yZnBcY4GYihM6"
@@ -18,7 +19,7 @@ def send_tweets_to_spark(http_resp, tcp_connection):
     for line in http_resp.iter_lines():
         try:
             full_tweet = json.loads(line)
-            tweet_text = full_tweet['text'] + '\n'
+            tweet_text = unidecode(full_tweet['text']) + '\n'
             print("Tweet Text: " + tweet_text)
             print ("------------------------------------------")
             tcp_connection.send(tweet_text.encode())

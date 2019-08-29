@@ -304,8 +304,8 @@ def ping_pong():
 @app.route('/refreshData')
 def refresh_graph_data():
     global labels, values
-    print("labels now: " + str(labels))
-    print("data now: " + str(values))
+    #print("labels now: " + str(labels))
+    #print("data now: " + str(values))
     return jsonify(sLabel=labels, sData=values)
 
 

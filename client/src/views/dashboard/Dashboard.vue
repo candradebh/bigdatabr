@@ -26,7 +26,7 @@
         <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
           <div class="card-header">Tamanho</div>
           <div class="card-body">
-            <h5 class="card-title">{{modelo.tamanho}} tweets</h5>
+            <h5 class="card-title">{{positivos.length + negativos.length}} tweets</h5>
             <p class="card-text">Tamanho do modelo</p>
           </div>
         </div>
@@ -38,7 +38,7 @@
             <h5 class="card-title">{{positivos.length}} tweets</h5>
             <p
               class="card-text"
-            >Indice de acertos, selecionar novos com avaliação diferente de null e realizar a conta de porcentagem</p>
+            >Indice de acertos é de {{ (this.acertosPositivo*100/this.positivosAvaliados) | numeralFormat }} %</p>
           </div>
         </div>
       </div>
@@ -47,7 +47,9 @@
           <div class="card-header">Negativos</div>
           <div class="card-body">
             <h5 class="card-title">{{negativos.length}} tweets</h5>
-            <p class="card-text">Tamanho do modelo</p>
+            <p
+              class="card-text"
+            >Indice de acertos é de {{ (this.acertosNegativo*100/this.negativosAvaliados) | numeralFormat }} %</p>
           </div>
         </div>
       </div>
@@ -69,6 +71,7 @@ import axios from "axios";
 import Chart from "chart.js";
 import { Line } from "vue-chartjs";
 
+
 export default {
   name: 'Dashboard',
   extends: Line,
@@ -85,13 +88,10 @@ export default {
       chartDataTrending: '',
       labelsTrending: [],
       valuesTrending: [],
-      modelo:{
-        tamanho:0,
-        positivos:0,
-        negativos:0,
-
-      }
-
+      acertosPositivo: 0,
+      positivosAvaliados:0,
+      acertosNegativo: 0,
+      negativosAvaliados:0,
     };
   },
   created() {
@@ -158,6 +158,26 @@ export default {
             this.volume.push(this.estatisticas[i].tam_modelo);
             this.indice.push(this.estatisticas[i].indice);
             this.labels.push(this.estatisticas[i].title)
+          }
+
+          //indice de acertos
+          for (var i = 0; i < this.novos.length; i++) {
+            if(this.novos[i].sentimento=='P' ){
+              if(this.novos[i].avaliacao!=''){
+                this.positivosAvaliados++;
+              }
+              if(this.novos[i].sentimento == this.novos[i].avaliacao){
+                this.acertosPositivo++;
+              }
+            }
+            if(this.novos[i].sentimento=='N' ){
+              if(this.novos[i].avaliacao!=''){
+                this.negativosAvaliados++;
+              }
+              if(this.novos[i].sentimento == this.novos[i].avaliacao){
+                this.acertosNegativo++;
+              }
+            }
           }
 
         })

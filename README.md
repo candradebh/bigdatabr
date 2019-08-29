@@ -34,11 +34,7 @@
 
 
 
-## Hadoop 
+## Spark 
 
-Intalação no windows em https://exitcondition.com/install-hadoop-windows/
-
-``` 
-$ hadoop namenode -format
-$ start-all.cmd
-``` 
+1. twitter_app.py
+spark-submit --executor-cores 31 --executor-memory 10G --driver-memory 2G spark_app.py

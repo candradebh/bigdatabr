@@ -52,7 +52,7 @@ Vue.component('stream-chart', {
           labels: this.chartLabel,
           datasets: [
             {
-              label: 'Data One',
+              label: 'Hashtags',
               backgroundColor: '#f87979',
               data: this.chartData,
             },

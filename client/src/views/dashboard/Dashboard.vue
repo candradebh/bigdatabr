@@ -137,9 +137,11 @@ export default {
                   .get(path)
                   .then(res => {
                     // eslint-disable-next-line
+
                         this.labelsTrending = res.data.sLabel;
                         this.valuesTrending = res.data.sData;
-
+                        console.log("labels" )
+                        console.log(this.labelsTrending)
                   })
                   .catch(error => {
                     // eslint-disable-next-line

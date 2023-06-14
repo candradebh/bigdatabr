@@ -6,8 +6,8 @@ import json
 from unidecode import unidecode
 
 # Replace the values below with yours
-CONSUMER_KEY = "PMrkmRMQy3n7yZnBcY4GYihM6"
-CONSUMER_SECRET = "f3e9oFfDfw3MA8ZmrV6QbeSthUDO8UTdb3TFrOsdkGmWRmmzCx"
+CONSUMER_KEY = "PMrkmRMQy3n7sdadayZnBcY4GYihM6"
+CONSUMER_SECRET = "f3e9oFfDfwssss3MA8ZmrV6QbeSthUDO8UTdb3TFrOsdkGmWRmmzCx"
 ACCESS_TOKEN = "92998645-EphmhVfonqO2YbXtBmRIcgZSpA6aoGt6nNPD8JAI9"
 ACCESS_SECRET = "0MbzoFCMq4LrGcya8ro2XMrjBifteujAa3NnVsgepHDG4"
 
